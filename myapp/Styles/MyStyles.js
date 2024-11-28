@@ -3,9 +3,9 @@ import { StyleSheet } from "react-native";
 export default StyleSheet.create({
     container:{
         flex: 1, 
-        marginTop : 50 ,
-        justifyContent:'center',
-        // alignItems : 'center'
+        // marginTop : 10 ,
+        // justifyContent:'center', -> trung tâm màn hình
+        // alignItems : 'center' 
     } , subject :{
         fontSize : 30 ,
         fontWeight : "bold",

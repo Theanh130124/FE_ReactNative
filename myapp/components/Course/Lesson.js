@@ -1,15 +1,18 @@
-import { Text, TouchableOpacity, View } from "react-native";
+
+// Còn bug lỗi đường dẫn k có tên server trên lesson 
+import { View, Text, ActivityIndicator, TouchableOpacity } from "react-native";
 import MyStyles from "../../Styles/MyStyles";
 import React from "react";
-import { ActivityIndicator } from "react-native-paper";
+
 import Item from "../utils/Item";
 import APIs , {endpoints} from "../../configs/APIs";
 // Nhớ qua bên App.js viết
 
-const Lesson = (route) => {
+//navigation là truyền  dữ liệu qua màn hình khác và route lấy dữ liệu của màn hiện tại 
+const Lesson = ({route, navigation}) => {
     //Nhớ thêm APis 
     
-    const [lessons, setLessons] = React.useState(null);
+    const [lesson, setLessons] = React.useState(null);
     const courseId = route.params?.courseId || null ; 
 
     const loadLessons = async () => {
@@ -28,20 +31,17 @@ const Lesson = (route) => {
         loadLessons();
     }, [courseId]);
     // Kiểm tra cái này truyền từ bên kia qua có null không -> không thì lấy
-
-    return (
-        <View style={[MyStyles.container]}>
-            <Text>Danh mục bài học {courseId}</Text>
-            {/* Nếu không có lesson thì cho nó có biểu tượng loading sao đó bọc trong  Fragment để bọc được nhiều thẻ  */}
-            {lessons === null ? <ActivityIndicator /> : <>
-                {lessons.map(l => <TouchableOpacity key={l.id}>
-                    <Item instance={l} />
-                </TouchableOpacity>)}
-            </>
-            }
-        </View>
-    );
-
+{/* Nếu không có lesson thì cho nó có biểu tượng loading sao đó bọc trong  Fragment để bọc được nhiều thẻ  */}
+return (
+    <View style={[MyStyles.container]}>
+        {lesson===null?<ActivityIndicator/>:<>
+        {/* Tới đây thì thêm màn hình trước khi trỏ tới LessonDetails và gửi kèm lessonId  */}
+            {lesson.map(l => <TouchableOpacity key={l.id} onPress={() => navigation.navigate('LessonDetails', {'lessonId':l.id})} >
+                <Item instance={l} />
+            </TouchableOpacity>)}
+        </>}
+    </View>
+);
 }
 export default Lesson;
 

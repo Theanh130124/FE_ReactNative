@@ -11,7 +11,7 @@ import "moment/locale/vi";
 
 
 
-import { View, Text, ActivityIndicator, Image, ScrollView, TouchableOpacity ,  RefreshControl } from "react-native";
+import { View, Text, ActivityIndicator, Image, ScrollView, TouchableOpacity ,  RefreshControl, StatusBar } from "react-native";
 import MyStyles from "../../Styles/MyStyles";
 import React from 'react';
 import APIs , {endpoints} from "../../configs/APIs";
@@ -29,16 +29,14 @@ const Course = ({navigation}) => {
 
     const loadCates = async () => {
         try {
-           
             let res = await APIs.get(endpoints['categories']);
             setCategories(res.data);
         } catch (ex) {
             console.error(ex);
         }
     }
-    
-    const loadCourses = async () => {
 
+    const loadCourses = async () => {
         if (page > 0) {
             setLoading(true);
             try {
@@ -60,7 +58,6 @@ const Course = ({navigation}) => {
             } finally {
                 setLoading(false);
             }
-            
         }
     }
 
@@ -83,6 +80,7 @@ const Course = ({navigation}) => {
                 setPage(page + 1);
         }
     }
+
     const goLesson = (courseId) => {
       // Lesson là tên bên của App.js
 
@@ -94,10 +92,10 @@ const Course = ({navigation}) => {
       //     return;
       // }
 
-  }
+    }
     const search = (value, callback) => {
-        setPage(1);
-        callback(value);
+    setPage(1);
+    callback(value)
     }
     return (
         <View style={[MyStyles.container, MyStyles.margin]}>
@@ -119,13 +117,12 @@ const Course = ({navigation}) => {
                 </TouchableOpacity>)}
                 {loading && page > 1 && <ActivityIndicator />}
             </ScrollView>
-        </View>
-    );
-
-  
-};
-
-export default Course;
+          </View>
+        
+      );
+    };
+    
+    export default Course;
 // const Course = ({navigation}) => {
 //   const [categories, setCategories] = React.useState(null);
 //   const [courses, setCourses] = React.useState([]);

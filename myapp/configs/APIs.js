@@ -7,7 +7,9 @@ export const endpoints = {
     'categories': '/categories/',
     'courses': '/courses/',
     //lessons là tên endpoint
-    'lessons': (courseId) => `/courses/${courseId}/lessons/`,
+    'lessons':(courseId) => `/courses/${courseId}/lessons/`,
+    'lessons-details': (lessonId) => `/lessons/${lessonId}`,
+    'comments': (lessonId) => `/lessons/${lessonId}/comments`,
 
 }
 export default axios.create({
