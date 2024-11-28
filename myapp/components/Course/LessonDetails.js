@@ -1,13 +1,16 @@
 import React from "react";
 import APIs, { endpoints } from "../../configs/APIs";
-import { ActivityIndicator, View, Text, useWindowDimensions } from "react-native";
+import { ActivityIndicator, View, Text, useWindowDimensions, ScrollView } from "react-native";
 import { Card, Chip } from "react-native-paper";
 import MyStyles from "../../Styles/MyStyles";
 import RenderHtml from 'react-native-render-html';
+import { isCloseToBottom } from "../utils/Utils";
 
 const LessonDetails = ({ route }) => {
     const [lesson, setLessons] = React.useState(null)
     const lessonId = route.params?.lessonId
+    const [comments , setComments] = React.useState(null)
+    c
     // Content render lại html
     const { width } = useWindowDimensions();
 
@@ -23,13 +26,27 @@ const LessonDetails = ({ route }) => {
             console.error(ex)
         }
     }
+    const loadComments = async () => {
+        try {
+            let res = await APIs.get(endpoints['comments'](lessonId))
+            setComments(res.data);
 
+        }catch(err){
+            console.error(err);
+        }
+    }
+    const loadMoreDate = () => {
+        if (!comments && isCloseToBottom()){
+            loadComments()
+        }
+    }
 
     React.useEffect(() => {
         loadLessons();
     }, [lessonId])
     return (
         <View>
+            <ScrollView onScroll={loadMoreData}>
             {/* Nếu chưa có dữ liệu thì load người lại bắt đầu từ <></> */}
             {lesson === null ? <ActivityIndicator /> : <>
                 <Card>
@@ -57,7 +74,7 @@ const LessonDetails = ({ route }) => {
                         <Button>Ok</Button>
                     </Card.Actions> */}
                 </Card></>}
-
+                </ScrollView>
         </View>
     )
 
