@@ -9,3 +9,5 @@ npm install @react-navigation/native-stack
 
 
 npm install react-native-render-html
+
+npm install expo-image-picker

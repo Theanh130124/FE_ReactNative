@@ -4,6 +4,7 @@ import LessonDetails from './components/Course/LessonDetails';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from '@react-navigation/native';
 import 'moment/locale/vi';
+import Register from './components/User/Register';
 
 
 const Stack = createNativeStackNavigator();
@@ -11,7 +12,7 @@ const Stack = createNativeStackNavigator();
 const MyStack = () => {
   return (
     <Stack.Navigator>
-      
+      <Stack.Screen name='Register' component={Register} />
       <Stack.Screen name='Course' component={Course} />
       <Stack.Screen name='Lesson' component={Lesson} />
       <Stack.Screen name='LessonDetails' component={LessonDetails} />
