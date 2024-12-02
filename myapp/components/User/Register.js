@@ -1,12 +1,13 @@
-import { Text, View , Image } from "react-native"
+import { Text, View, Image } from "react-native"
 import MyStyles from "../../Styles/MyStyles"
-import {  TextInput, TouchableRipple , Button, } from "react-native-paper"
+import { TextInput, TouchableRipple, Button, HelperText, } from "react-native-paper"
 import { useState } from "react";
+import APIs, { endpoints } from "../../configs/APIs";
 
 
 const picker = async () => {
     // useState là đối tượng -> user 
-   
+
     const { status } =
         await ImagePicker.requestMediaLibraryPermissionsAsync();
     // Nếu không có quyền truy cập vào bộ ảnh thì sẽ đưa ra thông báo
@@ -55,8 +56,10 @@ const Register = () => {
     }
     ]
     const [user, setUser] = useState({});
+    const [loading, setLoading] = useState(false);
+    const [error , setError] = useState(false);
     const change = (fields, value) => {
-        
+
         setUser(current => {
             //Phải bổ fields vào [] để nó lấy đc giá trị ra làm key
             return { ...current, [fields]: value }
@@ -64,6 +67,28 @@ const Register = () => {
 
         })
     }
+    const register = async () => {
+        if (user.password !== user.confirm)
+            setError(true);
+        else {
+            setError(false);
+            setLoading(true);
+        try {
+            // Phải có form để hiện dữ liệu
+            let form = new FormData();
+
+            let res = await APIs.post(endpoints['register'])
+        } catch (ex) {
+            console.error(ex);
+
+        } finally {
+            setLoading(false);
+        }
+    }
+
+        }
+        
+
     return (
         <View style={MyStyles.container}>
             <Text style={MyStyles.subject}>ĐĂNG KÝ NGƯỜI DÙNG</Text>
@@ -72,7 +97,10 @@ const Register = () => {
                 <Text style={MyStyles.margin}>Chọn ảnh đại diện....</Text>
             </TouchableRipple>
             {user.avatar && <Image style={[MyStyles.avatar, MyStyles.margin]} source={{ uri: user.avatar.uri }} />}
-            <Button style={MyStyles.margin} mode="contained" icon="account">ĐĂNG KÝ</Button>
+            <HelperText type="error" visible={error}>
+                MẬT KHẢU KHÔNG KHỚP
+            </HelperText>
+            <Button loading={loading} onPress={register} style={MyStyles.margin} mode="contained" icon="account">ĐĂNG KÝ</Button>
         </View>
     )
 };
